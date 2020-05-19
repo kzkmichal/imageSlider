@@ -1,0 +1,10 @@
+$bg: red;
+div {
+    color: $bg;
+}
+
+.list {
+    &__second {
+        background-color: yellow;
+    }
+}
