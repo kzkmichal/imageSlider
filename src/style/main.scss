@@ -90,7 +90,8 @@
         &__container {
             width: 100%;
             height: 100%;
-            display: flex;
+            // display: flex;
+            position: relative;
         }
     }
     
@@ -104,8 +105,15 @@
     }
     
     .slideImg {
+        position: absolute;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+    
+    .slideImg.visible {
+        opacity: 1;
     }
     
     @keyframes fadeOut {

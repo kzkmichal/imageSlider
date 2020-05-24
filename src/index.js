@@ -19,13 +19,13 @@ let btn1 = document.querySelector('.auth');
 
 const arr = []
 
-// function addImages() {
-//     arr.forEach(el => {
-//         addfullSizeImg(el)
-//         addThumbnail(el)
-//     })
-//     showSlider()
-// }
+function addImages() {
+    arr.forEach(el => {
+        addfullSizeImg(el)
+        addThumbnail(el)
+    })
+    showSlider()
+}
 
 
 
