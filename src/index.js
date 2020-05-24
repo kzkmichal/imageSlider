@@ -15,7 +15,7 @@ import {
 
 } from "./js/slider.js"
 
-let btn1 = document.querySelector('.auth');
+const btn1 = document.querySelector('.auth');
 
 const arr = []
 
