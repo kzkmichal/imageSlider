@@ -11,25 +11,21 @@ import {
     thumbImgCont,
     addfullSizeImg,
     addThumbnail,
-    start
+    showSlider
 
 } from "./js/slider.js"
 
 let btn1 = document.querySelector('.auth');
-let btn2 = document.querySelector('.exc');
-
 
 const arr = []
 
-function showSlider() {
-    arr.forEach(el => {
-        addfullSizeImg(el)
-        addThumbnail(el)
-        start()
-    })
-
-}
-
+// function addImages() {
+//     arr.forEach(el => {
+//         addfullSizeImg(el)
+//         addThumbnail(el)
+//     })
+//     showSlider()
+// }
 
 
 
@@ -46,7 +42,7 @@ function authenticate() {
             })
         .then(loadClient)
         .then(execute)
-        .then(showSlider)
+        .then(addImages)
 
 
 
@@ -76,7 +72,6 @@ function execute() {
         .then(response => {
             response.map(el => {
                 arr.push(el.baseUrl)
-
             });
         })
 

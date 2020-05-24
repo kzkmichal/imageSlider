@@ -1,88 +1,70 @@
- const thumbImgCont = document.getElementById('thumbnail-section');
+ const thumbImgCont = document.querySelector('.thumbnail-section');
  const fullSizeImgsCont = document.querySelector('.slides-section')
  let thumbnails;
  let fullSizeImgs;
- const captionCont = document.querySelector('.caption-container');
  const container = document.querySelector('.container')
  let currentImage = 0;
+ const buttons = document.querySelectorAll(".btn");
+ let thumbImgs;
+ const slider = document.querySelector('.slides-section__container')
+ let size;
 
 
  export function addfullSizeImg(el) {
-     const item = ` <div class="mySlides">
-            <img src=${el} alt="">
-        </div>
-    `
-     fullSizeImgsCont.insertAdjacentHTML('beforeend', item)
+     const item =
+         `   <img class="slideImg" src=${el} alt="">
+      `
+     slider.insertAdjacentHTML('beforeend', item)
 
  }
 
  export function addThumbnail(el) {
      const item = ` <div class="thumbnail">
-                <img class="demo cursor" src=${el} alt="">
-            </div>
-    `
+                  <img class="thumbnailImg" src=${el} alt="">
+              </div>
+      `
      thumbImgCont.insertAdjacentHTML('beforeend', item)
  }
 
- export function start() {
-     thumbnails = document.querySelectorAll('.thumbnail');
-     fullSizeImgs = document.querySelectorAll('.mySlides');
-     fullSizeImgs[0].classList.add('show')
+ export function showSlider() {
      container.classList.add('visible')
+     fullSizeImgs = document.querySelectorAll('.slideImg');
+     thumbnails = document.querySelectorAll('.thumbnail');
+     thumbImgs = document.querySelectorAll('.thumbnailImg')
+     size = fullSizeImgsCont.clientWidth
+     console.log(size);
 
+     thumbImgs.forEach((img, index) => img.addEventListener('click', () => {
+         currentImage = index
+         reset()
+         addClass();
 
+     }))
  }
+ showSlider()
 
  function reset() {
-     for (let img of fullSizeImgs) {
-         img.classList.remove('show');
-     }
-     for (let thumbs of thumbnails) {
-         thumbs.firstElementChild.classList.remove('active');
-     }
+     thumbImgs.forEach(img => img.classList.remove('active'))
  }
 
- thumbImgCont.addEventListener('click', (e) => {
-     reset();
-
-     const index = [...thumbnails].indexOf(e.target.parentNode);
-     fullSizeImgs[index].classList.add('show');
-     currentImage = index;
-     hiLiteThumbnail();
- })
-
- function hiLiteThumbnail() {
-     let thumbnail = thumbnails[currentImage].firstElementChild;
+ function addClass() {
+     let thumbnail = thumbImgs[currentImage]
      thumbnail.classList.add('active');
+     moveSlide()
  }
 
- function showPrev(e) {
-     reset();
-     if (e.target.classList.contains("prev") && currentImage > 0) {
-         currentImage -= 1;
-         fullSizeImgs[currentImage].classList.add('show');
-         hiLiteThumbnail();
-     } else if (e.target.classList.contains("prev") && currentImage === 0) {
-         currentImage = thumbnails.length - 1;
-         fullSizeImgs[currentImage].classList.add('show');
-         hiLiteThumbnail();
+ function moveSlide() {
+     slider.style.transition = "transform .7s ease-in-out";
+     slider.style.transform = "translateX(" + (-size * currentImage) + "px)"
+ }
+
+ function buttonCheck() {
+     if (this.id === "prev") {
+         currentImage > 0 ? currentImage-- : currentImage = thumbImgs.length - 1
+     } else {
+         currentImage < thumbImgs.length - 1 ? currentImage++ : currentImage = 0
      }
+     reset()
+     addClass();
  }
-
- function showNext(e) {
-     reset();
-     if (e.target.classList.contains("next") && currentImage < thumbnails.length - 1) {
-         currentImage += 1;
-         fullSizeImgs[currentImage].classList.add('show');
-         hiLiteThumbnail();
-     } else if (e.target.classList.contains("next") && currentImage === thumbnails.length - 1) {
-         currentImage = 0;
-         fullSizeImgs[currentImage].classList.add('show');
-         hiLiteThumbnail();
-     }
- }
-
- captionCont.addEventListener('click', (e) => {
-     if (e.target.nodeName !== 'A') return false;
-     e.target.classList.contains("next") ? showNext(e) : showPrev(e);
- });
+ buttons.forEach(btn => btn.addEventListener('click', buttonCheck));
