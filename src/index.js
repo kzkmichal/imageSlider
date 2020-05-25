@@ -4,10 +4,7 @@ import {
     addThumbnail,
     showSlider,
     clearSlider
-
-
 } from "./js/slider.js"
-
 
 const search = document.querySelector('.search__btn');
 const query = document.querySelector('.search__description')

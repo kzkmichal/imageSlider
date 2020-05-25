@@ -31,8 +31,6 @@
      thumbImgs = document.querySelectorAll('.thumbnailImg')
      fullSizeImgs[currentImage].classList.add('visible')
      selectThumbImg()
-     let size = thumbImgCont.clientWidth
-     console.log(size);
 
  }
 
