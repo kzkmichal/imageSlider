@@ -44,7 +44,6 @@ function addImages() {
         addThumbnail(el)
     })
     showSlider()
-    console.log(imagesArray)
 }
 
 function clearSearch() {
