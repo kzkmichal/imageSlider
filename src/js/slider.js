@@ -1,11 +1,13 @@
- const thumbImgCont = document.querySelector('.thumbnail-section');
+ const thumbImgCont = document.querySelector('.thumbnail-section__container');
+ const slider = document.querySelector('.slides-section__container')
+
  let thumbnails;
  let fullSizeImgs;
  const container = document.querySelector('.container')
  let currentImage = 0;
  const buttons = document.querySelectorAll(".btn");
  let thumbImgs;
- const slider = document.querySelector('.slides-section__container')
+
 
  export function addfullSizeImg(el) {
      const item =
@@ -14,7 +16,6 @@
      slider.insertAdjacentHTML('beforeend', item)
 
  }
-
  export function addThumbnail(el) {
      const item = ` <div class="thumbnail">
                    <img class="thumbnailImg" src=${el} alt="">
@@ -30,7 +31,13 @@
      thumbImgs = document.querySelectorAll('.thumbnailImg')
      fullSizeImgs[currentImage].classList.add('visible')
      selectThumbImg()
+     let size = thumbImgCont.clientWidth
+     console.log(size);
 
+ }
+
+ export function clearSlider() {
+     [thumbImgCont, slider].forEach(el => el.innerHTML = " ");
  }
 
 
@@ -44,6 +51,7 @@
      thumbnail.classList.add('active');
      let img = fullSizeImgs[currentImage]
      img.classList.add('visible');
+
  }
 
  function buttonCheck() {
@@ -54,8 +62,12 @@
      }
      reset()
      addClass();
+
  }
  buttons.forEach(btn => btn.addEventListener('click', buttonCheck));
+
+
+
 
  function selectThumbImg() {
      thumbImgs.forEach((img, index) => img.addEventListener('click', () => {

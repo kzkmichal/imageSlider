@@ -1,86 +1,61 @@
 import "./style/main.scss";
-
 import {
-    config
-} from "./js/config.js";
-
-
-import {
-    slider,
-    fullSizeImgsCont,
-    thumbImgCont,
     addfullSizeImg,
     addThumbnail,
-    showSlider
+    showSlider,
+    clearSlider
+
 
 } from "./js/slider.js"
 
-const btn1 = document.querySelector('.auth');
 
-const arr = []
+const search = document.querySelector('.search__btn');
+const query = document.querySelector('.search__description')
+const numberOfImg = document.querySelector('.search__number')
+let imagesArray = [];
+
+search.addEventListener('click', function() {
+    if (query.value !== "" && numberOfImg.value !== "") {
+        const key = '_ZGHb0PYdO7WEj3KcXoyl4UjQccO68wWc0Ht2TQ1i-k';
+        const url = `https://api.unsplash.com/search/photos?query=${query.value}&per_page=${numberOfImg.value}&client_id=${key}`;
+        get(url)
+        clearSearch()
+    } else return
+
+})
+
+
+function get(url) {
+    fetch(url)
+        .then(result => {
+            return result.json();
+        })
+        .then(data => {
+            data.results.map(el => {
+                imagesArray.push(el.urls.regular)
+            })
+        })
+        .then(addImages)
+        .then(imagesArray = [])
+        .catch(error => failHandler(error));
+}
 
 function addImages() {
-    arr.forEach(el => {
+    clearSlider()
+    imagesArray.forEach(el => {
         addfullSizeImg(el)
         addThumbnail(el)
     })
     showSlider()
+    console.log(imagesArray)
 }
 
-
-
-function authenticate() {
-    return gapi.auth2.getAuthInstance()
-        .signIn({
-            scope: config.scope[1]
-        })
-        .then(function() {
-                console.log("Sign-in successful");
-            },
-            function(err) {
-                console.error("Error signing in", err);
-            })
-        .then(loadClient)
-        .then(execute)
-        .then(addImages)
-
-
-
-
+function clearSearch() {
+    [query, numberOfImg].forEach(el =>
+        el.value = ''
+    )
 }
 
-function loadClient() {
-    return gapi.client.load(config.discoveryDocs)
-        .then(function() {
-                console.log("GAPI client loaded for API");
-            },
-            function(err) {
-                console.error("Error loading GAPI client for API", err);
-            });
+function failHandler(error) {
+    console.log(error)
 }
-
-function execute() {
-    return gapi.client.photoslibrary.mediaItems.list({
-            "pageSize": "100"
-        })
-        .then(function(response) {
-                return response.result.mediaItems;
-            },
-            function(err) {
-                console.error("Execute error", err);
-            })
-        .then(response => {
-            response.map(el => {
-                arr.push(el.baseUrl)
-            });
-        })
-
-}
-gapi.load("client:auth2", function() {
-    gapi.client.setApiKey(config.apiKey);
-    gapi.auth2.init({
-        client_id: config.clientId
-    });
-});
-
-btn1.addEventListener('click', authenticate)
